@@ -1,0 +1,350 @@
+/* Language selector styles */
+.language-selector {
+    position: relative;
+    margin-left: 20px;
+}
+
+.language-btn {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+    padding: 8px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.language-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.language-btn i {
+    font-size: 16px;
+}
+
+.language-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 8px 0;
+    margin-top: 8px;
+    z-index: 1000;
+    min-width: 150px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.language-dropdown.show {
+    display: block;
+}
+
+.language-dropdown a {
+    display: block;
+    padding: 8px 15px;
+    color: #333;
+    text-decoration: none;
+    transition: background 0.3s ease;
+}
+
+.language-dropdown a:hover {
+    background: #f5f5f5;
+}
+
+/* RTL Support */
+.rtl {
+    direction: rtl;
+    text-align: right;
+}
+
+.rtl .language-dropdown {
+    left: 0;
+    right: auto;
+}
+
+.rtl .nav-links {
+    flex-direction: row-reverse;
+}
+
+.rtl .search-container {
+    margin-left: 0;
+    margin-right: 20px;
+}
+
+.rtl .language-selector {
+    margin-left: 0;
+    margin-right: 20px;
+}
+
+/* Responsive design for language selector */
+@media (max-width: 768px) {
+    .language-selector {
+        margin: 10px 0;
+    }
+    
+    .language-dropdown {
+        width: 100%;
+        max-width: none;
+    }
+}
+
+/* Language change loading animation */
+.loading-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.9);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.loading-overlay.show {
+    display: flex;
+}
+
+.loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+.loading-text {
+    margin-top: 20px;
+    font-size: 18px;
+    color: #333;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* RTL support for loading overlay */
+.rtl .loading-text {
+    font-family: 'Arial', sans-serif;
+}
+
+/* Language-specific fonts */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&family=Noto+Sans+SC:wght@400;700&family=Noto+Sans+JP:wght@400;700&family=Noto+Sans+KR:wght@400;700&family=Noto+Sans+Arabic:wght@400;700&display=swap');
+
+/* Default font for Latin scripts */
+body {
+    font-family: 'Noto Sans', sans-serif;
+}
+
+/* Chinese */
+[lang="zh"] body {
+    font-family: 'Noto Sans SC', 'Noto Sans', sans-serif;
+}
+
+/* Japanese */
+[lang="ja"] body {
+    font-family: 'Noto Sans JP', 'Noto Sans', sans-serif;
+}
+
+/* Korean */
+[lang="ko"] body {
+    font-family: 'Noto Sans KR', 'Noto Sans', sans-serif;
+}
+
+/* Arabic */
+[lang="ar"] body {
+    font-family: 'Noto Sans Arabic', 'Noto Sans', sans-serif;
+}
+
+/* Font size adjustments for different scripts */
+[lang="zh"] .game-title,
+[lang="ja"] .game-title,
+[lang="ko"] .game-title {
+    font-size: 1.1em; /* Slightly larger for CJK characters */
+}
+
+[lang="ar"] .game-title {
+    font-size: 1.2em; /* Larger for Arabic script */
+}
+
+/* Line height adjustments */
+[lang="zh"] .game-description,
+[lang="ja"] .game-description,
+[lang="ko"] .game-description {
+    line-height: 1.6;
+}
+
+[lang="ar"] .game-description {
+    line-height: 1.7;
+}
+
+/* RTL text alignment refinements */
+[lang="ar"] .game-card,
+[lang="ar"] .section-title,
+[lang="ar"] .nav-links a {
+    text-align: right;
+}
+
+/* Language-specific spacing */
+[lang="ar"] .nav-links a {
+    padding-right: 0;
+    padding-left: 20px;
+}
+
+/* Improved font loading performance */
+.fonts-loading {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.fonts-loaded {
+    opacity: 1;
+}
+
+/* Recommendation system styles */
+.recommendations-section {
+    padding: 20px;
+    margin: 20px 0;
+    background: linear-gradient(to right, #f8f9fa, #e9ecef);
+    border-radius: 12px;
+}
+
+.recommendations-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.recommendations-title {
+    font-size: 1.5em;
+    color: #2c3e50;
+    margin: 0;
+}
+
+.recommendations-subtitle {
+    color: #6c757d;
+    font-size: 0.9em;
+}
+
+.recommendations-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    margin-top: 15px;
+}
+
+.recommendation-card {
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+}
+
+.recommendation-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.recommendation-thumbnail {
+    width: 100%;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+}
+
+.recommendation-info {
+    padding: 15px;
+}
+
+.recommendation-title {
+    font-size: 1.1em;
+    margin: 0 0 8px 0;
+    color: #2c3e50;
+}
+
+.recommendation-description {
+    font-size: 0.9em;
+    color: #6c757d;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.recommendation-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    font-size: 0.8em;
+    color: #6c757d;
+}
+
+.recommendation-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8em;
+}
+
+/* RTL support for recommendations */
+.rtl .recommendations-grid {
+    direction: rtl;
+}
+
+.rtl .recommendation-info {
+    text-align: right;
+}
+
+.rtl .recommendation-badge {
+    left: 10px;
+    right: auto;
+}
+
+/* Language-specific adjustments */
+[lang="ar"] .recommendation-title {
+    font-size: 1.2em;
+    line-height: 1.4;
+}
+
+[lang="zh"] .recommendation-description,
+[lang="ja"] .recommendation-description,
+[lang="ko"] .recommendation-description {
+    -webkit-line-clamp: 3;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .recommendations-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 15px;
+    }
+
+    .recommendation-info {
+        padding: 10px;
+    }
+
+    .recommendation-title {
+        font-size: 1em;
+    }
+
+    .recommendation-description {
+        font-size: 0.8em;
+    }
+} 
