@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head><!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HGQWVZ9MNT"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-HGQWVZ9MNT');
+</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Discover fun HTML5 games for girls at Game.net.im - the perfect gaming platform for girls who love cute and entertaining games">
@@ -110,46 +118,37 @@
         
         let currentGame = null;
         
-        // Function to show game details
-        function showGameDetails(gameId) {
+        // Function to show game player
+        function showGamePlayer(gameId) {
             currentGame = games.find(game => game.id === gameId);
             document.getElementById('home-section').classList.add('hidden');
-            document.getElementById('game-detail-section').classList.remove('hidden');
-            document.getElementById('game-play-section').classList.add('hidden');
+            document.getElementById('game-play-section').classList.remove('hidden');
             
-            // Update game details
-            document.getElementById('game-detail-banner').style.backgroundImage = `url('${currentGame.preview}')`;
-            document.getElementById('game-detail-name').textContent = currentGame.name;
-            document.getElementById('game-detail-rating').innerHTML = `${currentGame.rating} (1.2k reviews)`;
-            document.getElementById('game-detail-description').textContent = currentGame.description;
+            // Update game player
+            document.getElementById('game-player-name').textContent = currentGame.name;
+            document.getElementById('game-frame').src = currentGame.url;
+            
+            // Update game info in player
+            document.getElementById('game-info-name').textContent = currentGame.name;
+            document.getElementById('game-info-rating').innerHTML = `${currentGame.rating} <i class="fas fa-star text-yellow-400"></i>`;
+            document.getElementById('game-info-description').textContent = currentGame.description;
             
             // Update tags
-            const tagsContainer = document.getElementById('game-detail-tags');
+            const tagsContainer = document.getElementById('game-info-tags');
             tagsContainer.innerHTML = '';
             currentGame.tags.forEach(tag => {
                 const span = document.createElement('span');
-                span.className = 'tag px-3 py-1 rounded-full';
+                span.className = 'bg-pink-light text-pink-dark px-3 py-1 rounded-full text-sm mr-2';
                 span.textContent = tag;
                 tagsContainer.appendChild(span);
             });
         }
         
-        // Function to show game player
-        function showGamePlayer() {
-            document.getElementById('home-section').classList.add('hidden');
-            document.getElementById('game-detail-section').classList.add('hidden');
-            document.getElementById('game-play-section').classList.remove('hidden');
-            
-            // Update game player
-            document.getElementById('game-player-name').textContent = `Playing: ${currentGame.name}`;
-            document.getElementById('game-frame').src = currentGame.url;
-        }
-        
         // Function to go back to home
         function goBackToHome() {
             document.getElementById('home-section').classList.remove('hidden');
-            document.getElementById('game-detail-section').classList.add('hidden');
             document.getElementById('game-play-section').classList.add('hidden');
+            document.getElementById('game-frame').src = "";
         }
         
         // Initialize when page loads
@@ -162,33 +161,27 @@
                 const gameCard = document.createElement('div');
                 gameCard.className = 'game-card bg-white rounded-2xl overflow-hidden';
                 gameCard.innerHTML = `
-                    <div class="game-banner relative">
-                        <div class="preview-image" style="background-image: url('${game.preview}');"></div>
+                    <div class="game-banner relative cursor-pointer" onclick="showGamePlayer(${game.id})">
+                        <img src="${game.preview}" alt="${game.name}" class="w-full h-48 object-cover">
                         <div class="preview-overlay">
                             <i class="fas fa-play-circle text-white text-4xl"></i>
+                        </div>
+                        <div class="absolute top-0 right-0 bg-pink-secondary text-white px-3 py-1 rounded-bl-lg rounded-tr-lg">
+                            ${game.rating} <i class="fas fa-star"></i>
                         </div>
                     </div>
                     <div class="p-6">
                         <div class="flex justify-between items-start mb-4">
                             <h4 class="text-xl font-bold text-pink-dark">${game.name}</h4>
-                            <div class="flex">
-                                <i class="fas fa-star text-yellow-400"></i>
-                                <span class="ml-1 font-medium">${game.rating}</span>
-                            </div>
                         </div>
                         <p class="text-gray-600 mb-4">${game.description}</p>
                         <div class="flex flex-wrap gap-2 mb-6">
                             ${game.tags.map(tag => `<span class="tag px-3 py-1 rounded-full text-sm">${tag}</span>`).join('')}
                         </div>
-                        <button onclick="showGameDetails(${game.id})" class="w-full bg-pink-secondary text-white py-3 rounded-xl font-bold hover:bg-pink-dark transition">Play Now</button>
+                        <button onclick="showGamePlayer(${game.id})" class="w-full bg-pink-secondary text-white py-3 rounded-xl font-bold hover:bg-pink-dark transition">Play Now</button>
                     </div>
                 `;
                 gamesContainer.appendChild(gameCard);
-            });
-            
-            // Add event listeners to back buttons
-            document.querySelectorAll('.back-btn').forEach(button => {
-                button.addEventListener('click', goBackToHome);
             });
         });
     </script>
@@ -220,18 +213,6 @@
             position: relative;
         }
         
-        .preview-image {
-            height: 100%;
-            width: 100%;
-            background-size: cover;
-            background-position: center;
-            transition: all 0.4s ease;
-        }
-        
-        .game-card:hover .preview-image {
-            transform: scale(1.05);
-        }
-        
         .preview-overlay {
             position: absolute;
             top: 0;
@@ -246,7 +227,7 @@
             transition: opacity 0.3s ease;
         }
         
-        .game-card:hover .preview-overlay {
+        .game-banner:hover .preview-overlay {
             opacity: 1;
         }
         
@@ -259,14 +240,6 @@
         .tag:hover {
             background: rgba(255, 255, 255, 0.8);
             transform: scale(1.05);
-        }
-        
-        .game-detail-banner {
-            height: 350px;
-            border-radius: 20px;
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-            background-size: cover;
-            background-position: center;
         }
         
         .play-btn {
@@ -325,18 +298,22 @@
             transition: opacity 0.3s ease;
         }
         
+        .game-info-panel {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
         /* Mobile optimizations */
         @media (max-width: 768px) {
             .game-banner {
                 height: 150px;
             }
             
-            .game-detail-banner {
-                height: 220px;
-            }
-            
             .game-frame {
-                height: 60vh;
+                height: 50vh;
             }
         }
     </style>
@@ -432,133 +409,67 @@
         </section>
     </div>
 
-    <!-- Game Detail Section (Hidden by default) -->
-    <div id="game-detail-section" class="section hidden">
-        <section class="py-12 px-6 md:px-12">
-            <div class="container mx-auto bg-white rounded-3xl p-8 shadow-xl">
-                <div class="flex items-center mb-6">
-                    <button class="back-btn px-4 py-2 rounded-full mr-4">
-                        <i class="fas fa-arrow-left text-pink-secondary"></i>
-                    </button>
-                    <h3 class="text-2xl font-bold text-pink-dark">Game Details</h3>
-                </div>
-                
-                <div class="flex flex-col md:flex-row gap-8">
-                    <div class="md:w-2/5">
-                        <div id="game-detail-banner" class="game-detail-banner">
-                            <div class="h-full flex items-center justify-center bg-black bg-opacity-30">
-                                <i class="fas fa-play-circle text-white text-6xl"></i>
-                            </div>
-                        </div>
-                        
-                        <div class="mt-6 flex items-center justify-between">
-                            <div>
-                                <div class="flex items-center mb-2">
-                                    <div class="flex mr-2">
-                                        <i class="fas fa-star text-yellow-400"></i>
-                                        <i class="fas fa-star text-yellow-400"></i>
-                                        <i class="fas fa-star text-yellow-400"></i>
-                                        <i class="fas fa-star text-yellow-400"></i>
-                                        <i class="fas fa-star-half-alt text-yellow-400"></i>
-                                    </div>
-                                    <span id="game-detail-rating" class="text-gray-600">4.8 (1.2k reviews)</span>
-                                </div>
-                                <div class="text-gray-600">
-                                    <i class="fas fa-users mr-2"></i> 15k+ active players
-                                </div>
-                            </div>
-                            <button class="bg-pink-light text-pink-secondary p-3 rounded-full hover:bg-pink-secondary hover:text-white">
-                                <i class="fas fa-heart text-xl"></i>
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="md:w-3/5">
-                        <h4 id="game-detail-name" class="text-3xl font-bold text-pink-dark mb-3">Fashion Dress Up</h4>
-                        
-                        <div id="game-detail-tags" class="flex flex-wrap gap-2 mb-6">
-                            <span class="tag px-3 py-1 rounded-full">Fashion</span>
-                            <span class="tag px-3 py-1 rounded-full">Creative</span>
-                            <span class="tag px-3 py-1 rounded-full">Style</span>
-                            <span class="tag px-3 py-1 rounded-full">Design</span>
-                        </div>
-                        
-                        <p id="game-detail-description" class="text-gray-600 mb-6">
-                            Step into the world of fashion and design with Fashion Dress Up! Create stunning outfits with hundreds of dresses, accessories, shoes, and makeup options. Mix and match to create your perfect look for different occasions - from casual day out to glamorous evening events. Share your creations with friends and get inspired by other fashionistas!
-                        </p>
-                        
-                        <div class="mb-8">
-                            <h5 class="text-lg font-bold text-pink-dark mb-3">Features</h5>
-                            <ul class="grid grid-cols-2 gap-3">
-                                <li class="flex items-center">
-                                    <i class="fas fa-check-circle text-pink-secondary mr-2"></i>
-                                    <span>500+ clothing items</span>
-                                </li>
-                                <li class="flex items-center">
-                                    <i class="fas fa-check-circle text-pink-secondary mr-2"></i>
-                                    <span>Hair & makeup studio</span>
-                                </li>
-                                <li class="flex items-center">
-                                    <i class="fas fa-check-circle text-pink-secondary mr-2"></i>
-                                    <span>Daily fashion challenges</span>
-                                </li>
-                                <li class="flex items-center">
-                                    <i class="fas fa-check-circle text-pink-secondary mr-2"></i>
-                                    <span>Designer competitions</span>
-                                </li>
-                                <li class="flex items-center">
-                                    <i class="fas fa-check-circle text-pink-secondary mr-2"></i>
-                                    <span>Save & share outfits</span>
-                                </li>
-                                <li class="flex items-center">
-                                    <i class="fas fa-check-circle text-pink-secondary mr-2"></i>
-                                    <span>Seasonal collections</span>
-                                </li>
-                            </ul>
-                        </div>
-                        
-                        <button onclick="showGamePlayer()" class="play-btn w-full py-4 rounded-xl text-white font-bold text-lg">Play Now <i class="fas fa-play ml-2"></i></button>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </div>
-
     <!-- Game Play Section (Hidden by default) -->
     <div id="game-play-section" class="section hidden">
-        <section class="py-12 px-6 md:px-12">
+        <section class="py-6 px-6 md:px-12">
             <div class="container mx-auto">
-                <div class="flex items-center mb-6">
-                    <button class="back-btn px-4 py-2 rounded-full mr-4">
+                <div class="flex items-center mb-4">
+                    <button class="back-btn px-4 py-2 rounded-full mr-4" onclick="goBackToHome()">
                         <i class="fas fa-arrow-left text-pink-secondary"></i>
                     </button>
-                    <h3 id="game-player-name" class="text-2xl font-bold text-pink-dark">Playing: Fashion Dress Up</h3>
+                    <h3 id="game-player-name" class="text-xl font-bold text-pink-dark"></h3>
                 </div>
                 
-                <div class="bg-white rounded-3xl p-6 shadow-xl">
-                    <div class="game-frame">
-                        <iframe id="game-frame" src="" class="w-full h-full"></iframe>
-                    </div>
-                    
-                    <div class="flex justify-between items-center mt-6">
-                        <div class="flex items-center">
-                            <img src="https://via.placeholder.com/40" alt="User" class="rounded-full mr-3">
-                            <div>
-                                <div class="font-medium">Emma is playing</div>
-                                <div class="text-gray-500 text-sm">Fashion Dress Up</div>
+                <div class="flex flex-col lg:flex-row gap-6">
+                    <div class="lg:w-3/4">
+                        <div class="bg-white rounded-3xl p-0 shadow-xl overflow-hidden">
+                            <div class="game-frame">
+                                <iframe id="game-frame" src="" class="w-full h-full"></iframe>
                             </div>
                         </div>
-                        
-                        <div class="flex space-x-3">
-                            <button class="bg-pink-light text-pink-secondary p-3 rounded-full hover:bg-pink-secondary hover:text-white">
-                                <i class="fas fa-heart"></i>
-                            </button>
-                            <button class="bg-pink-light text-pink-secondary p-3 rounded-full hover:bg-pink-secondary hover:text-white">
-                                <i class="fas fa-share-alt"></i>
-                            </button>
-                            <button class="bg-pink-light text-pink-secondary p-3 rounded-full hover:bg-pink-secondary hover:text-white" onclick="document.getElementById('game-frame').requestFullscreen()">
-                                <i class="fas fa-expand"></i>
-                            </button>
+                    </div>
+                    
+                    <div class="lg:w-1/4">
+                        <div class="game-info-panel">
+                            <div class="flex justify-between items-center mb-4">
+                                <h4 id="game-info-name" class="text-xl font-bold text-pink-dark"></h4>
+                                <div class="flex items-center">
+                                    <span id="game-info-rating" class="text-pink-dark font-medium"></span>
+                                </div>
+                            </div>
+                            
+                            <p id="game-info-description" class="text-gray-600 mb-4"></p>
+                            
+                            <div id="game-info-tags" class="flex flex-wrap gap-2 mb-6">
+                                <!-- Tags will be generated by JavaScript -->
+                            </div>
+                            
+                            <div class="mb-6">
+                                <h5 class="text-lg font-bold text-pink-dark mb-3">Game Controls</h5>
+                                <ul class="space-y-2 text-gray-600">
+                                    <li class="flex items-center">
+                                        <i class="fas fa-mouse-pointer text-pink-secondary mr-2"></i>
+                                        <span>Left-click to interact</span>
+                                    </li>
+                                    <li class="flex items-center">
+                                        <i class="fas fa-keyboard text-pink-secondary mr-2"></i>
+                                        <span>Arrow keys for movement</span>
+                                    </li>
+                                    <li class="flex items-center">
+                                        <i class="fas fa-space-shuttle text-pink-secondary mr-2"></i>
+                                        <span>Space bar for actions</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <div class="flex space-x-3">
+                                <button class="bg-pink-light text-pink-secondary p-3 rounded-full hover:bg-pink-secondary hover:text-white flex-1">
+                                    <i class="fas fa-heart mr-2"></i> Favorite
+                                </button>
+                                <button class="bg-pink-light text-pink-secondary p-3 rounded-full hover:bg-pink-secondary hover:text-white flex-1">
+                                    <i class="fas fa-share-alt mr-2"></i> Share
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
